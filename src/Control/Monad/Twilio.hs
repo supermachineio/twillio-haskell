@@ -13,6 +13,7 @@
 module Control.Monad.Twilio
   ( -- * The Twilio monad
     Twilio
+  , parseCredentials
   , runTwilio
   , runTwilio'
     -- * The Twilio monad transformer
