@@ -24,6 +24,7 @@ module Twilio.Types
   , makeTwilioPOSTRequest'
   , makeTwilioDELETERequest
   , makeTwilioDELETERequest'
+  , makeTwilioFaxRequest
   ) where
 
 #if MIN_VERSION_http_client(0,5,0)
@@ -77,21 +78,32 @@ instance FromJSON APIVersion where
   parseJSON (String "2008-08-01") = return API_2008_08_01
   parseJSON _ = mzero
 
-makeTwilioRequest' :: Monad m => Text -> TwilioT m Request
-makeTwilioRequest' suffix = do
+makeTwilioRequest'' :: Monad m => Text -> Text -> TwilioT m Request
+makeTwilioRequest'' myBaseURL suffix = do
   ((accountSID, authToken), _) <- ask
 #if MIN_VERSION_http_client(0,4,30)
-  let Just request = parseUrlThrow . T.unpack $ baseURL <> suffix
+  let Just request = parseUrlThrow . T.unpack $ myBaseURL <> suffix
 #else
-  let Just request = parseUrl . T.unpack $ baseURL <> suffix
+  let Just request = parseUrl . T.unpack $ myBaseURL <> suffix
 #endif
   return $ applyBasicAuth (C.pack . T.unpack $ getSID accountSID)
                           (C.pack . T.unpack $ getAuthToken authToken) request
+
+makeTwilioRequest' :: Monad m => Text -> TwilioT m Request
+makeTwilioRequest' suffix = do
+    makeTwilioRequest'' baseURL suffix
 
 makeTwilioRequest :: Monad m => Text -> TwilioT m Request
 makeTwilioRequest suffix = do
   ((_, _), accountSID) <- ask
   makeTwilioRequest' $ "/Accounts/" <> getSID accountSID <> suffix
+
+makeTwilioFaxRequest :: Monad m
+                       => [(C.ByteString, C.ByteString)]
+                       -> TwilioT m Request
+makeTwilioFaxRequest params =
+  makeTwilioRequest'' "https://fax.twilio.com/v1" "/Faxes" <&> urlEncodedBody params
+
 
 makeTwilioPOSTRequest' :: Monad m
                        => Text
@@ -99,6 +111,7 @@ makeTwilioPOSTRequest' :: Monad m
                        -> TwilioT m Request
 makeTwilioPOSTRequest' resourceURL params =
   makeTwilioRequest' resourceURL <&> urlEncodedBody params
+
 
 makeTwilioPOSTRequest :: Monad m
                       => Text
