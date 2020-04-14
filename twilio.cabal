@@ -18,6 +18,7 @@ source-repository head
   type: git
   location: https://github.com/markandrus/twilio-haskell
 
+
 library
   ghc-options:         -Wall -fno-warn-name-shadowing -fno-warn-orphans -fno-warn-unticked-promoted-constructors -fno-warn-unused-do-bind
   exposed-modules:     Control.Monad.Twilio,
@@ -44,6 +45,7 @@ library
                        Twilio.Conferences,
                        Twilio.ConnectApp,
                        Twilio.ConnectApps,
+                       Twilio.Faxes,
                        Twilio.IncomingPhoneNumber,
                        Twilio.IncomingPhoneNumbers,
                        Twilio.Internal.Parser,
