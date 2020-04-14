@@ -11,10 +11,13 @@
 module Twilio.Faxes
   ( -- * Resource
     PostFax(..)
+  , PostFaxResponse(..)
   , Twilio.Faxes.post
   ) where
 
+import Control.Monad
 import Control.Monad.Catch
+import Data.Aeson
 import Data.Text (Text)
 import Data.Text.Encoding
 
@@ -32,7 +35,17 @@ data PostFax = PostFax
   , sendMediaUrl :: !Text
   } deriving (Show, Eq)
 
-instance Post1 PostFax () where
+newtype PostFaxResponse = PostFaxResponse
+    { status :: Text
+    }
+
+instance FromJSON PostFaxResponse where
+  parseJSON (Object v) = PostFaxResponse
+    <$>  v .: "status"
+
+  parseJSON _ = mzero
+
+instance Post1 PostFax PostFaxResponse where
   post1 msg = request parseJSONFromResponse =<<
     makeTwilioFaxRequest requiredParams
     where requiredParams = [ ("To",   encodeUtf8 $ sendTo msg)
@@ -41,5 +54,5 @@ instance Post1 PostFax () where
                            ]
 
 -- | Send a text message.
-post :: MonadThrow m => PostFax -> TwilioT m ()
+post :: MonadThrow m => PostFax -> TwilioT m PostFaxResponse
 post = Resource.post
