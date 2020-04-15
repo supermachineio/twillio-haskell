@@ -1,0 +1,22 @@
+{
+  "account_sid": "ACd88fa5b6cb9a5f6a2f1044cecf37ce4a",
+  "api_version": "v1",
+  "date_created": "2015-07-30T20:00:00Z",
+  "date_updated": "2015-07-30T20:00:00Z",
+  "direction": "outbound",
+  "from": "+15017122661",
+  "media_url": null,
+  "media_sid": null,
+  "num_pages": null,
+  "price": null,
+  "price_unit": null,
+  "quality": "superfine",
+  "sid": "FXd87be9ff8c935704925b0daa60c1e0dd",
+  "status": "queued",
+  "to": "+15555555555",
+  "duration": null,
+  "links": {
+    "media": "https://fax.twilio.com/v1/Faxes/FXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/Media"
+  },
+  "url": "https://fax.twilio.com/v1/Faxes/FXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+}

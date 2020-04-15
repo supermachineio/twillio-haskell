@@ -47,6 +47,12 @@ parseDateTime s =
     Just dateTime -> return dateTime
     Nothing       -> mzero
 
+parseDateTime' :: MonadPlus m => Text -> m UTCTime
+parseDateTime' s =
+  case parseTimeM True defaultTimeLocale (iso8601DateFormat (Just "%H:%M:%S%Z")) (T.unpack s) of
+    Just dateTime -> return dateTime
+    Nothing       -> mzero
+
 maybeReturn :: MonadPlus m => Maybe a -> m a
 maybeReturn (Just a) = return a
 maybeReturn Nothing  = mzero
