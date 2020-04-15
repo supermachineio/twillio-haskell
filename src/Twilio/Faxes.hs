@@ -20,8 +20,10 @@ import Control.Monad.Catch
 import Data.Aeson
 import Data.Text (Text)
 import Data.Text.Encoding
+import Data.Time.Clock
 
 import Control.Monad.Twilio
+import Twilio.Internal.Parser
 import Twilio.Internal.Request
 import Twilio.Internal.Resource as Resource
 import Twilio.Types
@@ -35,13 +37,25 @@ data PostFax = PostFax
   , sendMediaUrl :: !Text
   } deriving (Show, Eq)
 
-newtype PostFaxResponse = PostFaxResponse
-    { status :: Text
-    }
+data PostFaxResponse = PostFaxResponse
+  { sid         :: !FaxSID
+  , accountSID  :: !AccountSID
+  , status      :: !Text
+  , to          :: !Text
+  , from        :: !Text
+  , dateCreated :: !UTCTime
+  , dateUpdated :: !UTCTime
+  } deriving (Show)
 
 instance FromJSON PostFaxResponse where
   parseJSON (Object v) = PostFaxResponse
-    <$>  v .: "status"
+    <$>  v .: "sid"
+    <*>  v .: "account_sid"
+    <*>  v .: "status"
+    <*>  v .: "to"
+    <*>  v .: "from"
+    <*> (v .: "date_created" >>= parseDateTime)
+    <*> (v .: "date_updated" >>= parseDateTime)
 
   parseJSON _ = mzero
 

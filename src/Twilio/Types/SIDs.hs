@@ -25,6 +25,7 @@ module Twilio.Types.SIDs
   , CredentialSID(..)
   , CredentialListSID(..)
   , DomainSID(..)
+  , FaxSID(..)
   , FeedbackSummarySID(..)
   , IPAccessControlListSID(..)
   , IPAddressSID(..)
@@ -50,6 +51,7 @@ module Twilio.Types.SIDs
   , mkCredentialSID
   , mkCredentialListSID
   , mkDomainSID
+  , mkFaxSID
   , mkFeedbackSummarySID
   , mkIPAccessControlListSID
   , mkIPAddressSID
@@ -94,6 +96,7 @@ createSID S C "Credential"
 createSID C L "CredentialList"
 createSID S D "Domain"
 createSID F S "FeedbackSummary"
+createSID F X "Fax"
 createSID A L "IPAccessControlList"
 createSID I P "IPAddress"
 createSID M E "Media"
