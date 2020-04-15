@@ -15,9 +15,9 @@ module Twilio.Faxes
   , Twilio.Faxes.post
   ) where
 
-import Control.Monad
 import Control.Monad.Catch
 import Data.Aeson
+import qualified Data.Aeson.Types as AE
 import Data.Text (Text)
 import Data.Text.Encoding
 import Data.Time.Clock
@@ -54,10 +54,12 @@ instance FromJSON PostFaxResponse where
     <*>  v .: "status"
     <*>  v .: "to"
     <*>  v .: "from"
-    <*> (v .: "date_created" >>= parseDateTime)
-    <*> (v .: "date_updated" >>= parseDateTime)
+    <*> (v .: "date_created" >>= parseDateTime')
+    <*> (v .: "date_updated" >>= parseDateTime')
 
-  parseJSON _ = mzero
+  parseJSON wat =
+    AE.typeMismatch "Expected object, but got " wat
+
 
 instance Post1 PostFax PostFaxResponse where
   post1 msg = request parseJSONFromResponse =<<
