@@ -130,6 +130,8 @@ test-suite integrationtests
   main-is:             Spec.hs
   Type:                exitcode-stdio-1.0
   other-modules:       Twilio.Types.PriceUnitSpec
+                     , Twilio.Types.IncomingPhoneNumberSpec
+                     , Twilio.Types.AvailablePhoneNumberSpec
   build-depends:       base
                      , containers ==0.6.*
                      , hspec == 2.*
