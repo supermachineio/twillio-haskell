@@ -23,16 +23,23 @@ data Capability
   = Voice
   | SMS
   | MMS
+  | Fax
   deriving (Bounded, Enum, Eq, Ord, Read, Show)
 
+capabilityToJSONString :: Capability -> String
+capabilityToJSONString Voice = "voice"
+capabilityToJSONString SMS = "SMS"
+capabilityToJSONString MMS = "MMS"
+capabilityToJSONString Fax = "fax"
+
 instance {-# OVERLAPPING #-} FromJSON Capabilities where
-  parseJSON (Object map) 
+  parseJSON (Object map)
     = let map' = fmap (\value -> case value of
                         Bool bool     -> bool
                         _             -> False) map
       in  return $ foldr (\capability set ->
-            if HashMap.lookupDefault False (T.pack $ show capability) map'
+            if HashMap.lookupDefault False (T.pack $ capabilityToJSONString capability) map'
               then Set.insert capability set
               else set
-          ) Set.empty [Voice, SMS, MMS]
+          ) Set.empty [Voice, SMS, MMS, Fax]
   parseJSON _ = mzero

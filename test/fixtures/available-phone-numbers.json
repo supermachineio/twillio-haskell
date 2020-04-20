@@ -1,0 +1,20 @@
+{
+  "friendly_name": "(916) 439-8493",
+  "phone_number": "+19164398493",
+  "lata": "726",
+  "rate_center": "FOLSOM",
+  "latitude": "38.678000",
+  "longitude": "-121.176100",
+  "locality": "Folsom",
+  "region": "CA",
+  "postal_code": "95630",
+  "iso_country": "US",
+  "address_requirements": "none",
+  "beta": false,
+  "capabilities": {
+    "voice": true,
+    "SMS": true,
+    "MMS": true,
+    "fax": true
+  }
+}
