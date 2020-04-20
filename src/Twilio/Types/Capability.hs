@@ -1,4 +1,5 @@
 {-#LANGUAGE FlexibleInstances #-}
+{-#LANGUAGE OverloadedStrings #-}
 {-#LANGUAGE TypeSynonymInstances #-}
 -------------------------------------------------------------------------------
 -- |
@@ -12,6 +13,7 @@ module Twilio.Types.Capability where
 
 import Control.Monad
 import Data.Aeson
+import qualified Data.ByteString.Char8 as C
 import qualified Data.HashMap.Strict as HashMap
 import Data.Set (Set)
 import qualified Data.Set as Set
@@ -31,6 +33,12 @@ capabilityToJSONString Voice = "voice"
 capabilityToJSONString SMS = "SMS"
 capabilityToJSONString MMS = "MMS"
 capabilityToJSONString Fax = "fax"
+
+toQueryParam :: Capability -> (C.ByteString, Maybe C.ByteString)
+toQueryParam Voice = ("VoiceEnabled", Just "true")
+toQueryParam SMS = ("SmsEnabled", Just "true")
+toQueryParam MMS = ("MmsEnabled", Just "true")
+toQueryParam Fax = ("FaxEnabled", Just "true")
 
 instance {-# OVERLAPPING #-} FromJSON Capabilities where
   parseJSON (Object map)
