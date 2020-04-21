@@ -1,6 +1,7 @@
 {-#LANGUAGE DuplicateRecordFields #-}
 {-#LANGUAGE MultiParamTypeClasses #-}
 {-#LANGUAGE OverloadedStrings #-}
+{-#LANGUAGE RecordWildCards #-}
 -------------------------------------------------------------------------------
 -- |
 -- Module      :  Twilio.Messages
@@ -73,6 +74,18 @@ instance FromJSON FaxStatus where
     parseJSON wat =
         AE.typeMismatch "Expected string, but got " wat
 
+instance ToJSON FaxStatus where
+    toJSON Queued      = String "queued"
+    toJSON Processing  = String "processing"
+    toJSON Sending     = String "sending"
+    toJSON Delivered   = String "delivered"
+    toJSON Receiving   = String "receiving"
+    toJSON Received    = String "received"
+    toJSON NoAnswer    = String "no-answer"
+    toJSON Busy        = String "busy"
+    toJSON Failed      = String "failed"
+    toJSON Canceled    = String "canceled"
+    toJSON (Other str) = String str
 
 data FaxCallbackPayload = FaxCallbackPayload
     { faxSid     :: !FaxSID
@@ -84,6 +97,37 @@ data FaxCallbackPayload = FaxCallbackPayload
     , from       :: !Text
     , accountSID :: !AccountSID
     } deriving (Show)
+
+instance Eq FaxCallbackPayload where
+    (==) p1 p2 =
+        faxSid p1 == faxSid p2
+
+instance FromJSON FaxCallbackPayload where
+  parseJSON (Object v) = FaxCallbackPayload
+    <$>  v .: "FaxSid"
+    <*>  v .: "ApiVersion"
+    <*>  v .: "MediaUrl"
+    <*>  v .: "NumPages"
+    <*>  v .: "FaxStatus"
+    <*>  v .: "To"
+    <*>  v .: "From"
+    <*>  v .: "AccountSid"
+
+  parseJSON wat =
+    AE.typeMismatch "Expected object, but got " wat
+
+instance ToJSON FaxCallbackPayload where
+    toJSON FaxCallbackPayload{..} =
+        object
+            [ "FaxSid" .= faxSid
+            , "ApiVersion" .= apiVersion
+            , "MediaUrl" .= mediaUrl
+            , "NumPages" .= numPages
+            , "FaxStatus" .= faxStatus
+            , "To" .= to
+            , "From" .= from
+            , "AccountSid" .= accountSID
+            ]
 
 data PostFaxResponse = PostFaxResponse
   { sid         :: !FaxSID

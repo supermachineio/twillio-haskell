@@ -76,6 +76,10 @@ instance Show APIVersion where
   show API_2008_08_01 = "2008-08-01"
   show Fax_API_V1 = "v1"
 
+instance ToJSON APIVersion where
+  toJSON apiVersion =
+       String . T.pack $ show apiVersion
+
 instance FromJSON APIVersion where
   parseJSON (String "2010-04-01") = return API_2010_04_01
   parseJSON (String "2008-08-01") = return API_2008_08_01
