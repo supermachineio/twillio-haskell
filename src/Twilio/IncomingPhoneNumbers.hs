@@ -12,6 +12,7 @@ module Twilio.IncomingPhoneNumbers
   ( -- * Resource
     IncomingPhoneNumbers(..)
   , PostIncomingPhoneNumber(..)
+  , VoiceReceiveMode(..)
   , Twilio.IncomingPhoneNumbers.get
   , Twilio.IncomingPhoneNumbers.post
   ) where
@@ -36,7 +37,18 @@ data IncomingPhoneNumbers = IncomingPhoneNumbers
 
 data PostIncomingPhoneNumber = PostIncomingPhoneNumber
     { reqPhoneNumber :: !Text
+    , reqVoiceUrl :: !Text
+    , reqVoiceReceiveMode :: !VoiceReceiveMode
+    , reqStatusCallbackUrl :: !Text
     }
+
+data VoiceReceiveMode
+    = FaxMode
+    | VoiceMode
+
+voiceReceiveModeToParam :: VoiceReceiveMode -> Text
+voiceReceiveModeToParam FaxMode = "fax"
+voiceReceiveModeToParam VoiceMode = "voice"
 
 instance List IncomingPhoneNumbers IncomingPhoneNumber where
   getListWrapper = wrap (const IncomingPhoneNumbers)
@@ -54,6 +66,9 @@ instance Post1 PostIncomingPhoneNumber IncomingPhoneNumber where
   post1 msg = request parseJSONFromResponse =<<
     makeTwilioPOSTRequest "/IncomingPhoneNumbers.json" requiredParams
     where requiredParams = [ ("PhoneNumber", encodeUtf8 $ reqPhoneNumber msg)
+                           , ("VoiceReceiveMode", encodeUtf8 . voiceReceiveModeToParam $ reqVoiceReceiveMode msg)
+                           , ("VoiceUrl", encodeUtf8 $ reqVoiceUrl msg)
+                           , ("StatusCallbackUrl", encodeUtf8 $ reqStatusCallbackUrl msg)
                            ]
 
 -- | Get 'IncomingPhoneNumbers' for a particular country.
