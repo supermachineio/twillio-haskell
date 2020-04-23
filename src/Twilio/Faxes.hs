@@ -16,6 +16,7 @@ module Twilio.Faxes
   , PostFaxResponse(..)
   , FaxCallbackPayload(..)
   , FaxStatus(..)
+  , IncomingFaxPayload(..)
   , Twilio.Faxes.post
   ) where
 
@@ -86,6 +87,16 @@ instance ToJSON FaxStatus where
     toJSON Failed      = String "failed"
     toJSON Canceled    = String "canceled"
     toJSON (Other str) = String str
+
+
+data IncomingFaxPayload = IncomingFaxPayload
+    { sid        :: !FaxSID
+    , apiVersion :: !APIVersion
+    , to         :: !Text
+    , from       :: !Text
+    , accountSid :: !AccountSID
+    } deriving (Show)
+
 
 data FaxCallbackPayload = FaxCallbackPayload
     { faxSid     :: !FaxSID
