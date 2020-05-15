@@ -61,21 +61,29 @@ import Twilio.Internal.Request
 data APIVersion
   = API_2010_04_01
   | API_2008_08_01
+  | Fax_API_V1
   deriving Eq
 
 instance Read APIVersion where
   readsPrec _ = \case
     "2010-04-01" -> return (API_2010_04_01, "")
     "2008-08-01" -> return (API_2008_08_01, "")
+    "v1"         -> return (Fax_API_V1, "")
     _            -> mzero
 
 instance Show APIVersion where
   show API_2010_04_01 = "2010-04-01"
   show API_2008_08_01 = "2008-08-01"
+  show Fax_API_V1 = "v1"
+
+instance ToJSON APIVersion where
+  toJSON apiVersion =
+       String . T.pack $ show apiVersion
 
 instance FromJSON APIVersion where
   parseJSON (String "2010-04-01") = return API_2010_04_01
   parseJSON (String "2008-08-01") = return API_2008_08_01
+  parseJSON (String "v1")         = return Fax_API_V1
   parseJSON _ = mzero
 
 makeTwilioRequest'' :: Monad m => Text -> Text -> TwilioT m Request
