@@ -40,6 +40,8 @@ module Twilio.Types.SIDs
   , TranscriptionSID(..)
   , UsageTriggerSID(..)
   , MessagingServiceSID(..)
+  , VerificationSID(..)
+  , VerificationServiceSID(..)
     -- * Smart Constructors
   , mkAccountSID
   , mkAddressSID
@@ -65,6 +67,8 @@ module Twilio.Types.SIDs
   , mkTranscriptionSID
   , mkUsageTriggerSID
   , mkMessagingServiceSID
+  , mkVerificationSID
+  , mkVerificationServiceSID
   , module Twilio.Types.SID
   ) where
 
@@ -109,6 +113,8 @@ createSID S C "ShortCode"
 createSID S M "SMSMessage"
 createSID T R "Transcription"
 createSID U T "UsageTrigger"
+createSID V E "Verification"
+createSID V A "VerificationService"
 
 newtype MessageSID = MessageSID {
   getMessageSID :: Either SMSMessageSID MMSMessageSID

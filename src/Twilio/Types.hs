@@ -25,6 +25,8 @@ module Twilio.Types
   , makeTwilioDELETERequest
   , makeTwilioDELETERequest'
   , makeTwilioFaxRequest
+  , makeTwilioVerifyRequest
+  , makeTwilioVerificationCheckRequest
   ) where
 
 #if MIN_VERSION_http_client(0,5,0)
@@ -110,7 +112,23 @@ makeTwilioFaxRequest :: Monad m
                        => [(C.ByteString, C.ByteString)]
                        -> TwilioT m Request
 makeTwilioFaxRequest params =
-  makeTwilioRequest'' "https://fax.twilio.com/v1" "/Faxes" <&> urlEncodedBody params
+  makeTwilioRequest'' baseFaxURL "/Faxes" <&> urlEncodedBody params
+
+
+makeTwilioVerifyRequest :: Monad m
+                       => Text
+                       -> [(C.ByteString, C.ByteString)]
+                       -> TwilioT m Request
+makeTwilioVerifyRequest verifyServiceId params =
+  makeTwilioRequest'' verifyBaseURL ("/" <> verifyServiceId <> "/Verifications") <&> urlEncodedBody params
+
+
+makeTwilioVerificationCheckRequest :: Monad m
+                       => Text
+                       -> [(C.ByteString, C.ByteString)]
+                       -> TwilioT m Request
+makeTwilioVerificationCheckRequest verifyServiceId params =
+  makeTwilioRequest'' verifyBaseURL ("/" <> verifyServiceId <> "/VerificationCheck") <&> urlEncodedBody params
 
 
 makeTwilioPOSTRequest' :: Monad m
