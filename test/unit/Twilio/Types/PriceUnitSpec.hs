@@ -32,19 +32,6 @@ spec = do
       it "should work for arbitrary strings" $ property $ forAll notPriceUnitEnum $
         \code -> fromJSON (String code) == (Success $ OtherPriceUnit code)
 
-  describe "PostFaxResponse" $ do
-    describe "decoding from JSON" $ do
-      it "should work" $ do
-        result <- AE.eitherDecodeFileStrict "./test/fixtures/fax-post-response.json"
-        case result of
-            (Left err) ->
-                throwIO . AssertionFailed $ show err
-
-            (Right resp) ->
-                sid resp `shouldBe` "FXd87be9ff8c935704925b0daa60c1e0dd"
-
-
-
 notPriceUnitEnum :: Gen Text
 notPriceUnitEnum = suchThat arbitrary $
     \code -> not $ code `elem` ["USD", "EUR", "JPY"]

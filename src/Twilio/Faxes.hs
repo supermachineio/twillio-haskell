@@ -141,13 +141,13 @@ instance ToJSON FaxCallbackPayload where
             ]
 
 data PostFaxResponse = PostFaxResponse
-  { sid         :: !FaxSID
-  , accountSID  :: !AccountSID
-  , status      :: !Text
-  , to          :: !Text
-  , from        :: !Text
-  , dateCreated :: !UTCTime
-  , dateUpdated :: !UTCTime
+  { faxResponseSid         :: !FaxSID
+  , faxResponseAccountSID  :: !AccountSID
+  , faxResponseStatus      :: !Text
+  , faxResponseTo          :: !Text
+  , faxResponseFrom        :: !Text
+  , faxResponseDateCreated :: !UTCTime
+  , faxResponseDateUpdated :: !UTCTime
   } deriving (Show)
 
 instance FromJSON PostFaxResponse where

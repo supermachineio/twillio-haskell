@@ -59,6 +59,12 @@ runRequest (RequestT (FreeT m)) = m >>= \case
 baseURL :: Text
 baseURL = "https://api.twilio.com/2010-04-01"
 
+baseFaxURL :: Text
+baseFaxURL = "https://fax.twilio.com/v1"
+
+verifyBaseURL :: Text
+verifyBaseURL = "https://verify.twilio.com/v2/Services"
+
 runRequest' :: MonadIO m => (Text, Text) -> RequestT m a -> m a
 runRequest' credentials (RequestT (FreeT m)) = m >>= \case
     Free f -> runRequest' credentials . RequestT =<< run (return <$> f)

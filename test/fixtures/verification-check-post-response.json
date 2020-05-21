@@ -1,0 +1,13 @@
+{
+  "sid": "VEd88fa5b6cb9a5f6a2f1044cecf37ce4a",
+  "service_sid": "VAd88fa5b6cb9a5f6a2f1044cecf37ce4a",
+  "account_sid": "ACd88fa5b6cb9a5f6a2f1044cecf37ce4a",
+  "to": "+15017122661",
+  "channel": "sms",
+  "status": "approved",
+  "valid": true,
+  "amount": null,
+  "payee": null,
+  "date_created": "2015-07-30T20:00:00Z",
+  "date_updated": "2015-07-30T20:00:00Z"
+}

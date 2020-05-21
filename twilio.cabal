@@ -84,7 +84,9 @@ library
                        Twilio.UsageRecord,
                        Twilio.UsageRecords,
                        Twilio.UsageTrigger,
-                       Twilio.UsageTriggers
+                       Twilio.UsageTriggers,
+                       Twilio.Verification
+                       Twilio.VerificationCheck
   hs-source-dirs:      src
   build-depends:       aeson >=0.8 && <0.10 || >=0.11,
                        base ==4.*,
@@ -132,6 +134,9 @@ test-suite integrationtests
   other-modules:       Twilio.Types.PriceUnitSpec
                      , Twilio.Types.IncomingPhoneNumberSpec
                      , Twilio.Types.AvailablePhoneNumberSpec
+                     , Twilio.FaxesSpec
+                     , Twilio.VerificationSpec
+                     , Twilio.VerificationCheckSpec
   build-depends:       base
                      , containers ==0.6.*
                      , hspec == 2.*
